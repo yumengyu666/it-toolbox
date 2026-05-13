@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>Icon</key>
+            <data>
+iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEKUlEQVR4nO3dP2ueVRjH8SulkMkgFBw6qIgVcXDQVUEHUcHJf1RcBN+B4NLunXwFioMIKjjoIBVx8AV0txZBJ5dWkAoFKzZxeIhJSC1Nep/7nPv3fD7T0zvPcDXnm6snGZoqAAAAAAAAAAAAAAAAmNJG7wEmd25np/cIi3NhI6aDZf9FxNvGggNf3uAintfC4l7OsELubwFxDz+gkAc0cNjDDibkBRgw7OEGEvLCDBb1UMOIecEGCftE7wH+I+ZlG+T8+n9VDfKJYEIdt3XfDS3mTB3PtV/QYs7W6Xz7BC3m9dDhnOcPWszrZebznjdoMa+nGc99nB/bwQTmC9p2Xm8znf88QYuZqlk6aB+0mNmvcQ/u0ERpG7TtzO007MKGJkq7oG1n7qRRHzY0UdoEbTtzNxp0YkMTZfqgbWeOYuJebGiiCJoo0wbtusFxTNiNDU0UQRNF0EQRNFGmC9o3hNyLifqxoYkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIKe0cevVp3Y6D1FNkHPZPNk1d+3qrb9t/BNCbqhZx7ae/38I1U//LJ6/ezDXcZZC4Ju4Mypqk9er3rh0b1nL56p+u7n1euXzlR9+sbqfUzrZO8B0nzw8uqe/P63VVdv7D3f2qy6/tfq9fnvq05vVZ1/rurmP1XvXewyaiQbemIP3l/1259V12/uPXvigaofrx5837Ubq2ent2YdL56gJ/bm51WXr1V99XbVO0+tnr3yeNU3P+295+yTVV++VfXrH1Vnv+gzZypXjgYuXlndl999evXnx05VXfl97+P3bVa99lnVre0+8yUTdCO3tqs+vLR6/fXlgx/76NL886wLV44Z7L9u0JagiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImijTBX1hw69l5/gm6seGJoqgiSJookwbtHs0xzFhNzY0UQRNlOmDdu3gKCbuxYYmiqCJ0iZo1w7uRoNObGii9GrampuzjXhQw6xoe3m4adXgP2sqUN59CiuJabUzUfFC+CRmm7oW8VcYNGrGc5m25oqma4kZkj6nXW0AzNhHOVoE1nrmS4M3RRz2WrwULtNbf3CprsBwt03W83sWbhR5y4coBD3Jf5Dzt4j4rzC/kKQLsQ2TscRYNnHp/EvB5+AozeUNnQAAAAAAAAAAAAAAAAxTnvSAAAAAElFTkSuQmCC
+            </data>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+            <string>IT 工具箱</string>
+            <key>PayloadDescription</key>
+            <string>将 IT 工具箱添加到主屏幕</string>
+            <key>PayloadDisplayName</key>
+            <string>IT 工具箱</string>
+            <key>PayloadIdentifier</key>
+            <string>com.it-toolbox.webclip.C951EF742</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
+            <key>PayloadUUID</key>
+            <string>C951EF742-5838-4933-B428-5E6D49DA8424</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>Precomposed</key>
+            <true/>
+            <key>URL</key>
+            <string>http://127.0.0.1:8765/</string>
+        </dict>
+    </array>
+    <key>PayloadDisplayName</key>
+    <string>IT 工具箱</string>
+    <key>PayloadIdentifier</key>
+    <string>com.it-toolbox.profile</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>482344AF-7C00-4291-9717-98FED3113888</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>

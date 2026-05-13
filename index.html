@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="IT工具箱">
+<meta name="theme-color" content="#1c1c1e">
+<title>IT 工具箱</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<style>
+:root {
+  --bg: #f2f2f7;
+  --card-bg: #ffffff;
+  --text: #1c1c1e;
+  --text-secondary: #6e6e73;
+  --accent: #007aff;
+  --border: #e5e5ea;
+  --input-bg: #f2f2f7;
+  --tag-bg: #e8e8ed;
+  --success: #34c759;
+  --warning: #ff9500;
+  --danger: #ff3b30;
+  --radius: 13px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --card-bg: #1c1c1e;
+    --text: #ffffff;
+    --text-secondary: #aeaeb2;
+    --border: #38383a;
+    --input-bg: #2c2c2e;
+    --tag-bg: #2c2c2e;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+/* Header */
+header {
+  padding: 16px 20px 8px;
+  position: sticky; top:0; z-index:10;
+  background: var(--bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+header h1 {
+  font-size: 34px; font-weight: 700;
+  letter-spacing: 0.37px;
+  color: var(--text);
+}
+header p {
+  font-size: 13px; color: var(--text-secondary);
+  margin-top: 2px;
+}
+/* Tool tabs */
+.tools-nav {
+  display: flex; gap: 6px; padding: 12px 20px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tools-nav::-webkit-scrollbar { display:none; }
+.tool-tab {
+  flex-shrink: 0; padding: 8px 16px;
+  border-radius: 20px; font-size: 13px; font-weight: 500;
+  background: var(--tag-bg); color: var(--text-secondary);
+  border: none; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.tool-tab.active {
+  background: var(--accent); color: #ffffff;
+}
+/* Main content */
+main {
+  padding: 0 20px 40px;
+}
+.tool-panel {
+  display: none;
+  animation: fadeIn 0.25s ease;
+}
+.tool-panel.active { display: block; }
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(6px); }
+  to { opacity:1; transform: translateY(0); }
+}
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 15px; font-weight: 600;
+  margin-bottom: 10px; color: var(--text);
+}
+.card-desc {
+  font-size: 12px; color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+/* Form elements */
+label {
+  display: block; font-size: 12px; font-weight: 500;
+  color: var(--text-secondary); margin-bottom: 4px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+textarea, input[type="text"], input[type="number"], select {
+  width: 100%; padding: 10px 12px;
+  font-size: 15px; font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  background: var(--input-bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  outline: none; resize: vertical;
+  transition: border 0.2s;
+  -webkit-appearance: none;
+}
+textarea:focus, input:focus, select:focus {
+  border-color: var(--accent);
+}
+textarea { min-height: 80px; }
+select {
+  font-family: -apple-system, sans-serif;
+}
+.btn-row {
+  display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 18px; font-size: 14px; font-weight: 500;
+  border: none; border-radius: 10px; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-secondary { background: var(--input-bg); color: var(--text); border: 1px solid var(--border); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-success { background: var(--success); color: #fff; }
+.btn:active { transform: scale(0.96); opacity: 0.85; }
+/* Output area */
+.output {
+  background: var(--input-bg);
+  border-radius: 10px; padding: 12px;
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 13px; line-height: 1.5;
+  word-break: break-all; white-space: pre-wrap;
+  margin-top: 10px; min-height: 40px;
+  color: var(--text); border: 1px solid var(--border);
+  position: relative;
+}
+.output.empty { color: var(--text-secondary); }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  padding: 4px 10px; font-size: 11px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 6px; cursor: pointer;
+  opacity: 0; transition: opacity 0.2s;
+}
+.output:hover .copy-btn, .output:active .copy-btn { opacity:1; }
+/* Strength meter */
+.strength-bar {
+  display: flex; gap: 3px; margin: 8px 0; height: 5px;
+}
+.strength-seg {
+  flex: 1; border-radius: 3px;
+  background: var(--border); transition: background 0.3s;
+}
+.strength-seg.weak { background: var(--danger); }
+.strength-seg.medium { background: var(--warning); }
+.strength-seg.strong { background: var(--success); }
+/* Toast */
+.toast {
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+  background: #1c1c1e; color: #fff; padding: 10px 22px;
+  border-radius: 20px; font-size: 14px; z-index: 999;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.toast.show { opacity: 1; }
+/* Timestamp presets */
+.presets {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;
+}
+.preset {
+  padding: 6px 12px; font-size: 12px;
+  background: var(--tag-bg); color: var(--text);
+  border: none; border-radius: 16px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.preset:active { background: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>IT 工具箱</h1>
+  <p>密码 · JSON · Base64 · 时间戳 · 哈希 · 正则 · UUID · 颜色</p>
+</header>
+
+<nav class="tools-nav" id="tabs"></nav>
+
+<main id="panels"></main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== Tool Registry =====
+const tools = {};
+
+function registerTool(id, name, icon, renderFn) {
+  tools[id] = { name, icon, renderFn };
+}
+
+// ===== UI =====
+function initUI() {
+  const tabsEl = document.getElementById('tabs');
+  const panelsEl = document.getElementById('panels');
+  for (const [id, t] of Object.entries(tools)) {
+    const btn = document.createElement('button');
+    btn.className = 'tool-tab'; btn.textContent = t.name;
+    btn.onclick = () => switchTool(id);
+    btn.dataset.tool = id;
+    tabsEl.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.className = 'tool-panel'; panel.id = 'panel-' + id;
+    panelsEl.appendChild(panel);
+    t.renderFn(panel);
+  }
+  switchTool(Object.keys(tools)[0]);
+}
+
+function switchTool(id) {
+  document.querySelectorAll('.tool-tab').forEach(b => b.classList.toggle('active', b.dataset.tool === id));
+  document.querySelectorAll('.tool-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + id));
+  localStorage.setItem('activeTool', id);
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+function copyText(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => toast('已复制'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    toast('已复制');
+  }
+}
+
+function makeOutput(parent, id) {
+  const div = document.createElement('div');
+  div.className = 'output empty'; div.id = id;
+  div.textContent = '等待操作...';
+
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn'; btn.textContent = '复制';
+  btn.onclick = (e) => { e.stopPropagation(); copyText(div.textContent); };
+  div.appendChild(btn);
+  parent.appendChild(div);
+  return div;
+}
+
+function setOutput(id, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text; el.classList.remove('empty');
+  // re-add copy button
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn'; btn.textContent = '复制';
+  btn.onclick = (e) => { e.stopPropagation(); copyText(el.textContent); };
+  el.appendChild(btn);
+}
+
+function makeLabel(parent, text) {
+  const l = document.createElement('label');
+  l.textContent = text; parent.appendChild(l);
+}
+
+function makeTextarea(parent, id, placeholder, rows) {
+  const ta = document.createElement('textarea');
+  ta.id = id; ta.placeholder = placeholder || '';
+  if (rows) ta.style.minHeight = (rows * 20) + 'px';
+  parent.appendChild(ta);
+  return ta;
+}
+
+function makeInput(parent, id, placeholder, type) {
+  const inp = document.createElement('input');
+  inp.type = type || 'text'; inp.id = id;
+  inp.placeholder = placeholder || '';
+  parent.appendChild(inp);
+  return inp;
+}
+
+function makeBtn(parent, text, cls, onClick) {
+  const b = document.createElement('button');
+  b.className = 'btn ' + cls; b.textContent = text;
+  b.onclick = onClick; parent.appendChild(b);
+  return b;
+}
+
+// ===== 1. Password Generator =====
+registerTool('password', '密码生成', '🔑', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">随机密码生成器</div>';
+  panel.appendChild(card);
+
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:12px;align-items:end;flex-wrap:wrap;';
+  card.appendChild(row);
+
+  const lenDiv = document.createElement('div');
+  makeLabel(lenDiv, '长度');
+  const lenInput = makeInput(lenDiv, 'pw-len', '16', 'number');
+  lenInput.value = '16'; lenInput.style.width = '80px';
+  row.appendChild(lenDiv);
+
+  const opts = [
+    ['pw-upper', '大写', true],
+    ['pw-lower', '小写', true],
+    ['pw-digit', '数字', true],
+    ['pw-symbol', '符号', true],
+  ];
+  opts.forEach(([id, label, checked]) => {
+    const d = document.createElement('div');
+    d.style.cssText = 'display:flex;align-items:center;gap:4px;';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.id = id; cb.checked = checked;
+    const lbl = document.createElement('label');
+    lbl.textContent = label; lbl.style.cssText = 'margin:0;font-size:13px;text-transform:none;letter-spacing:0;';
+    lbl.htmlFor = id;
+    d.appendChild(cb); d.appendChild(lbl);
+    row.appendChild(d);
+  });
+
+  const out = makeOutput(card, 'pw-out');
+
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '生成密码', 'btn-primary', () => {
+    const len = parseInt(lenInput.value) || 16;
+    const upper = document.getElementById('pw-upper').checked;
+    const lower = document.getElementById('pw-lower').checked;
+    const digit = document.getElementById('pw-digit').checked;
+    const symbol = document.getElementById('pw-symbol').checked;
+    let chars = '';
+    if (upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (lower) chars += 'abcdefghijklmnopqrstuvwxyz';
+    if (digit) chars += '0123456789';
+    if (symbol) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+    if (!chars) { setOutput('pw-out', '请至少选择一种字符类型'); return; }
+    const arr = new Uint32Array(len);
+    crypto.getRandomValues(arr);
+    let pwd = '';
+    for (let i = 0; i < len; i++) pwd += chars[arr[i] % chars.length];
+    setOutput('pw-out', pwd);
+    updateStrength(pwd);
+  });
+  makeBtn(btnRow, '复制', 'btn-secondary', () => {
+    const t = document.getElementById('pw-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+
+  const strengthBar = document.createElement('div');
+  strengthBar.className = 'strength-bar';
+  for (let i = 0; i < 4; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'strength-seg'; strengthBar.appendChild(seg);
+  }
+  card.appendChild(strengthBar);
+  const strengthLabel = document.createElement('div');
+  strengthLabel.style.cssText = 'font-size:12px;color:var(--text-secondary);margin-top:4px;';
+  strengthLabel.textContent = '密码强度';
+  card.appendChild(strengthLabel);
+
+  function updateStrength(pwd) {
+    let score = 0;
+    if (pwd.length >= 12) score++;
+    if (pwd.length >= 16) score++;
+    if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[^A-Za-z0-9]/.test(pwd)) score++;
+    const segs = strengthBar.children;
+    const levels = ['', 'weak', 'weak', 'medium', 'medium', 'strong'];
+    for (let i = 0; i < 4; i++) {
+      segs[i].className = 'strength-seg';
+      if (i < Math.min(score, 4)) segs[i].classList.add(levels[Math.min(score, 4)]);
+    }
+    strengthLabel.textContent = ['很弱','弱','中等','强','非常强'][Math.min(score-1, 4)] || '密码强度';
+  }
+});
+
+// ===== 2. JSON Formatter =====
+registerTool('json', 'JSON 格式化', '📋', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">JSON 格式化 / 验证</div>';
+  panel.appendChild(card);
+
+  const ta = makeTextarea(card, 'json-in', '粘贴 JSON 字符串...', 6);
+  const out = makeOutput(card, 'json-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '格式化', 'btn-primary', () => {
+    try {
+      const obj = JSON.parse(ta.value);
+      setOutput('json-out', JSON.stringify(obj, null, 2));
+    } catch(e) {
+      setOutput('json-out', 'JSON 解析错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '压缩', 'btn-secondary', () => {
+    try {
+      const obj = JSON.parse(ta.value);
+      setOutput('json-out', JSON.stringify(obj));
+    } catch(e) {
+      setOutput('json-out', 'JSON 解析错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '复制', 'btn-secondary', () => {
+    const t = document.getElementById('json-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+  makeBtn(btnRow, '清空', 'btn-danger', () => {
+    ta.value = '';
+    document.getElementById('json-out').textContent = '等待操作...';
+    document.getElementById('json-out').classList.add('empty');
+  });
+});
+
+// ===== 3. Base64 =====
+registerTool('base64', 'Base64', '🔣', (panel) => {
+  const modes = [
+    ['base64-encode', '编码 (文本 → Base64)'],
+    ['base64-decode', '解码 (Base64 → 文本)'],
+  ];
+  const modeDiv = document.createElement('div');
+  modeDiv.style.cssText = 'display:flex;gap:8px;margin-bottom:12px;';
+  panel.appendChild(modeDiv);
+  let currentMode = 'encode';
+  modes.forEach(([val, label]) => {
+    const b = document.createElement('button');
+    b.className = 'preset'; b.textContent = label;
+    b.onclick = () => {
+      currentMode = val === 'base64-encode' ? 'encode' : 'decode';
+      modeDiv.querySelectorAll('.preset').forEach(p => p.style.background = '');
+      b.style.background = 'var(--accent)'; b.style.color = '#fff';
+    };
+    if (val === 'base64-encode') { b.style.background = 'var(--accent)'; b.style.color = '#fff'; }
+    modeDiv.appendChild(b);
+  });
+
+  const card = document.createElement('div'); card.className = 'card';
+  panel.appendChild(card);
+  const ta = makeTextarea(card, 'b64-in', '输入文本...', 5);
+  const out = makeOutput(card, 'b64-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '执行', 'btn-primary', () => {
+    try {
+      if (currentMode === 'encode') {
+        setOutput('b64-out', btoa(unescape(encodeURIComponent(ta.value))));
+      } else {
+        setOutput('b64-out', decodeURIComponent(escape(atob(ta.value.trim()))));
+      }
+    } catch(e) {
+      setOutput('b64-out', '错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '复制', 'btn-secondary', () => {
+    const t = document.getElementById('b64-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+});
+
+// ===== 4. Timestamp Converter =====
+registerTool('timestamp', '时间戳', '⏱', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">时间戳转换</div>';
+  panel.appendChild(card);
+
+  const presetsDiv = document.createElement('div'); presetsDiv.className = 'presets';
+  card.appendChild(presetsDiv);
+  makeBtn(presetsDiv, '现在', 'preset', () => updateTimestamp(Date.now()));
+  makeBtn(presetsDiv, '今天 00:00', 'preset', () => {
+    const d = new Date(); d.setHours(0,0,0,0); updateTimestamp(d.getTime());
+  });
+  makeBtn(presetsDiv, '本周一', 'preset', () => {
+    const d = new Date(); d.setDate(d.getDate() - d.getDay() + 1); d.setHours(0,0,0,0);
+    updateTimestamp(d.getTime());
+  });
+
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;';
+  card.appendChild(row);
+
+  const secDiv = document.createElement('div'); secDiv.style.flex = '1';
+  makeLabel(secDiv, 'Unix 时间戳 (秒)');
+  const secInput = makeInput(secDiv, 'ts-sec', '如 1700000000');
+  row.appendChild(secDiv);
+
+  const msDiv = document.createElement('div'); msDiv.style.flex = '1';
+  makeLabel(msDiv, 'Unix 时间戳 (毫秒)');
+  const msInput = makeInput(msDiv, 'ts-ms', '如 1700000000000');
+  row.appendChild(msDiv);
+
+  const btnRow2 = document.createElement('div'); btnRow2.className = 'btn-row'; card.appendChild(btnRow2);
+  makeBtn(btnRow2, '时间戳 → 日期', 'btn-primary', () => {
+    const v = secInput.value || msInput.value;
+    if (!v) return;
+    let ts = parseInt(v);
+    if (ts > 9999999999999) ts = Math.floor(ts / 1000000);
+    else if (ts > 9999999999) ts = Math.floor(ts / 1000);
+    const d = new Date(ts * (v.length > 10 ? 1 : 1000));
+    setOutput('ts-out', formatDate(d));
+  });
+  makeBtn(btnRow2, '日期 → 时间戳', 'btn-secondary', () => makeDatePicker(card));
+
+  const out = makeOutput(card, 'ts-out');
+
+  function updateTimestamp(ms) {
+    secInput.value = Math.floor(ms / 1000);
+    msInput.value = ms;
+    setOutput('ts-out', formatDate(new Date(ms)));
+  }
+
+  function formatDate(d) {
+    const pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${String(d.getMilliseconds()).padStart(3,'0')} (周${['日','一','二','三','四','五','六'][d.getDay()]})
+ISO: ${d.toISOString()}
+UTC: ${d.toUTCString()}
+本地: ${d.toLocaleString('zh-CN')}`;
+  }
+
+  function makeDatePicker(card) {
+    const existing = document.getElementById('date-picker-row');
+    if (existing) { existing.remove(); return; }
+    const div = document.createElement('div'); div.id = 'date-picker-row';
+    div.style.cssText = 'display:flex;gap:8px;margin-top:8px;align-items:end;flex-wrap:wrap;';
+    const fields = [
+      ['年', 'dp-y', 4, new Date().getFullYear()],
+      ['月', 'dp-m', 2, new Date().getMonth()+1],
+      ['日', 'dp-d', 2, new Date().getDate()],
+      ['时', 'dp-h', 2, new Date().getHours()],
+      ['分', 'dp-mi', 2, new Date().getMinutes()],
+      ['秒', 'dp-s', 2, new Date().getSeconds()],
+    ];
+    fields.forEach(([label, id, size, val]) => {
+      const d = document.createElement('div');
+      makeLabel(d, label);
+      const inp = makeInput(d, id, '', 'number');
+      inp.style.width = (size * 20 + 10) + 'px'; inp.value = val;
+      div.appendChild(d);
+    });
+    makeBtn(div, '转换', 'btn-primary', () => {
+      const y = parseInt(document.getElementById('dp-y').value);
+      const m = parseInt(document.getElementById('dp-m').value) - 1;
+      const d = parseInt(document.getElementById('dp-d').value);
+      const h = parseInt(document.getElementById('dp-h').value) || 0;
+      const mi = parseInt(document.getElementById('dp-mi').value) || 0;
+      const s = parseInt(document.getElementById('dp-s').value) || 0;
+      const ts = new Date(y,m,d,h,mi,s).getTime();
+      secInput.value = Math.floor(ts/1000);
+      msInput.value = ts;
+      setOutput('ts-out', formatDate(new Date(ts)));
+    });
+    card.appendChild(div);
+  }
+
+  updateTimestamp(Date.now());
+});
+
+// ===== 5. Hash =====
+registerTool('hash', '哈希计算', '🔐', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">哈希 / 校验和</div>';
+  panel.appendChild(card);
+
+  const algoDiv = document.createElement('div');
+  algoDiv.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;';
+  card.appendChild(algoDiv);
+  const algos = ['SHA-256','SHA-512','SHA-1','MD5'];
+  let currentAlgo = 'SHA-256';
+  algos.forEach(a => {
+    const b = document.createElement('button');
+    b.className = 'preset'; b.textContent = a;
+    b.onclick = () => {
+      currentAlgo = a;
+      algoDiv.querySelectorAll('.preset').forEach(p => p.style.background = '');
+      b.style.background = 'var(--accent)'; b.style.color = '#fff';
+    };
+    if (a === 'SHA-256') { b.style.background = 'var(--accent)'; b.style.color = '#fff'; }
+    algoDiv.appendChild(b);
+  });
+
+  makeLabel(card, '输入文本');
+  const ta = makeTextarea(card, 'hash-in', '输入要哈希的文本...', 4);
+  const out = makeOutput(card, 'hash-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '计算哈希', 'btn-primary', async () => {
+    const text = ta.value;
+    const algo = currentAlgo.replace('-','').toUpperCase();
+    let enc = new TextEncoder().encode(text);
+    if (algo === 'MD5') {
+      // MD5 not in Web Crypto, fallback
+      setOutput('hash-out', 'MD5 需要额外库支持，请使用 SHA-256/SHA-512/SHA-1');
+      return;
+    }
+    try {
+      const hash = await crypto.subtle.digest(algo, enc);
+      setOutput('hash-out', Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join(''));
+    } catch(e) {
+      setOutput('hash-out', '错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '复制', 'btn-secondary', () => {
+    const t = document.getElementById('hash-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+
+  // HMAC section
+  const hmacTitle = document.createElement('div');
+  hmacTitle.style.cssText = 'margin-top:16px;';
+  hmacTitle.innerHTML = '<div class="card-title">HMAC 消息认证码</div>';
+  card.appendChild(hmacTitle);
+
+  makeLabel(card, '密钥');
+  const keyInput = makeInput(card, 'hmac-key', '输入 HMAC 密钥...');
+  makeLabel(card, '消息');
+  const msgTa = makeTextarea(card, 'hmac-msg', '输入消息...', 3);
+  const hmacOut = makeOutput(card, 'hmac-out');
+  const hmacRow = document.createElement('div'); hmacRow.className = 'btn-row'; card.appendChild(hmacRow);
+  makeBtn(hmacRow, '计算 HMAC', 'btn-primary', async () => {
+    try {
+      const key = new TextEncoder().encode(keyInput.value);
+      const msg = new TextEncoder().encode(msgTa.value);
+      const algo = { name: 'HMAC', hash: currentAlgo.replace('-','-') };
+      const cryptoKey = await crypto.subtle.importKey('raw', key, algo, false, ['sign']);
+      const sig = await crypto.subtle.sign(algo, cryptoKey, msg);
+      setOutput('hmac-out', Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2,'0')).join(''));
+    } catch(e) {
+      setOutput('hmac-out', '错误: ' + e.message);
+    }
+  });
+});
+
+// ===== 6. Regex Tester =====
+registerTool('regex', '正则测试', '🔍', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">正则表达式测试器</div>';
+  panel.appendChild(card);
+
+  makeLabel(card, '正则表达式');
+  const reInput = makeInput(card, 're-pattern', '如 \\d{3}-\\d{4}');
+  const flagsDiv = document.createElement('div');
+  flagsDiv.style.cssText = 'display:flex;gap:12px;margin:6px 0;';
+  card.appendChild(flagsDiv);
+  ['g','i','m','s'].forEach(f => {
+    const d = document.createElement('div');
+    d.style.cssText = 'display:flex;align-items:center;gap:4px;';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.id = 're-flag-' + f; cb.checked = f === 'g' || f === 'i';
+    const lbl = document.createElement('label');
+    lbl.textContent = f; lbl.style.cssText = 'margin:0;font-size:13px;text-transform:none;letter-spacing:0;';
+    lbl.htmlFor = 're-flag-' + f;
+    d.appendChild(cb); d.appendChild(lbl);
+    flagsDiv.appendChild(d);
+  });
+
+  makeLabel(card, '测试文本');
+  const reTa = makeTextarea(card, 're-text', '输入测试文本...', 5);
+  const out = makeOutput(card, 're-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '匹配', 'btn-primary', () => {
+    try {
+      let flags = '';
+      ['g','i','m','s'].forEach(f => {
+        if (document.getElementById('re-flag-'+f).checked) flags += f;
+      });
+      const re = new RegExp(reInput.value, flags);
+      const text = reTa.value;
+      const matches = flags.includes('g') ? [...text.matchAll(re)] : [text.match(re)].filter(Boolean);
+      if (matches.length === 0) { setOutput('re-out', '无匹配'); return; }
+      let result = '';
+      matches.forEach((m, i) => {
+        result += `匹配 ${i+1}: "${m[0]}" 位置: ${m.index}\n`;
+        if (m.groups) result += `  命名组: ${JSON.stringify(m.groups)}\n`;
+        m.slice(1).forEach((g, j) => {
+          if (g !== undefined) result += `  组 ${j+1}: "${g}"\n`;
+        });
+      });
+      setOutput('re-out', result || '无匹配');
+    } catch(e) {
+      setOutput('re-out', '正则错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '替换测试', 'btn-secondary', () => {
+    const replaceWith = prompt('替换为:');
+    if (replaceWith === null) return;
+    try {
+      let flags = '';
+      ['g','i','m','s'].forEach(f => {
+        if (document.getElementById('re-flag-'+f).checked) flags += f;
+      });
+      const re = new RegExp(reInput.value, flags);
+      setOutput('re-out', reTa.value.replace(re, replaceWith));
+    } catch(e) {
+      setOutput('re-out', '错误: ' + e.message);
+    }
+  });
+});
+
+// ===== 7. UUID Generator =====
+registerTool('uuid', 'UUID 生成', '🆔', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">UUID / GUID 生成器</div>';
+  panel.appendChild(card);
+
+  const countDiv = document.createElement('div');
+  countDiv.style.cssText = 'display:flex;align-items:end;gap:8px;margin-bottom:8px;';
+  card.appendChild(countDiv);
+  const cntDiv = document.createElement('div');
+  makeLabel(cntDiv, '数量');
+  const cntInput = makeInput(cntDiv, 'uuid-count', '1', 'number');
+  cntInput.value = '1'; cntInput.style.width = '80px';
+  cntDiv.appendChild(cntInput);
+  countDiv.appendChild(cntDiv);
+
+  const formatDiv = document.createElement('div');
+  makeLabel(formatDiv, '格式');
+  const fmtSelect = document.createElement('select');
+  fmtSelect.id = 'uuid-format';
+  ['标准 (8-4-4-4-12)', '无连字符', '大写', '大寫無連字符'].forEach((v, i) => {
+    const o = document.createElement('option'); o.value = i; o.textContent = v;
+    fmtSelect.appendChild(o);
+  });
+  formatDiv.appendChild(fmtSelect);
+  countDiv.appendChild(formatDiv);
+
+  const out = makeOutput(card, 'uuid-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '生成 UUID', 'btn-primary', () => {
+    const count = parseInt(cntInput.value) || 1;
+    const fmt = parseInt(fmtSelect.value);
+    let result = '';
+    for (let i = 0; i < count; i++) {
+      let uuid = crypto.randomUUID();
+      if (fmt === 1) uuid = uuid.replace(/-/g, '');
+      if (fmt === 2) uuid = uuid.toUpperCase();
+      if (fmt === 3) uuid = uuid.toUpperCase().replace(/-/g, '');
+      result += uuid + '\n';
+    }
+    setOutput('uuid-out', result.trim());
+  });
+  makeBtn(btnRow, '复制全部', 'btn-secondary', () => {
+    const t = document.getElementById('uuid-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+});
+
+// ===== 8. URL Encoder =====
+registerTool('url', 'URL 编解码', '🔗', (panel) => {
+  const modes = [
+    ['url-encode', '编码 (encodeURIComponent)'],
+    ['url-decode', '解码 (decodeURIComponent)'],
+  ];
+  const modeDiv = document.createElement('div');
+  modeDiv.style.cssText = 'display:flex;gap:8px;margin-bottom:12px;';
+  panel.appendChild(modeDiv);
+  let currentMode = 'encode';
+  modes.forEach(([val, label]) => {
+    const b = document.createElement('button');
+    b.className = 'preset'; b.textContent = label;
+    b.onclick = () => {
+      currentMode = val === 'url-encode' ? 'encode' : 'decode';
+      modeDiv.querySelectorAll('.preset').forEach(p => p.style.background = '');
+      b.style.background = 'var(--accent)'; b.style.color = '#fff';
+    };
+    if (val === 'url-encode') { b.style.background = 'var(--accent)'; b.style.color = '#fff'; }
+    modeDiv.appendChild(b);
+  });
+
+  const card = document.createElement('div'); card.className = 'card';
+  panel.appendChild(card);
+  const ta = makeTextarea(card, 'url-in', '输入 URL 或文本...', 5);
+  const out = makeOutput(card, 'url-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '执行', 'btn-primary', () => {
+    try {
+      setOutput('url-out', currentMode === 'encode' ? encodeURIComponent(ta.value) : decodeURIComponent(ta.value));
+    } catch(e) {
+      setOutput('url-out', '错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '复制', 'btn-secondary', () => {
+    const t = document.getElementById('url-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+});
+
+// ===== 9. Color Converter =====
+registerTool('color', '颜色转换', '🎨', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">颜色格式转换</div>';
+  panel.appendChild(card);
+
+  makeLabel(card, '颜色值');
+  const colorInput = makeInput(card, 'color-in', '如 #ff5733, rgb(255,87,51), hsl(12,100%,60%)');
+
+  const preview = document.createElement('div');
+  preview.id = 'color-preview';
+  preview.style.cssText = 'width:60px;height:60px;border-radius:12px;margin:8px 0;background:#ccc;border:2px solid var(--border);';
+  card.appendChild(preview);
+
+  const out = makeOutput(card, 'color-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '解析', 'btn-primary', () => {
+    const val = colorInput.value.trim();
+    try {
+      // Use a temp div to parse
+      const div = document.createElement('div');
+      div.style.color = val;
+      document.body.appendChild(div);
+      const computed = getComputedStyle(div).color;
+      document.body.removeChild(div);
+
+      if (!computed || computed === 'rgba(0, 0, 0, 0)') {
+        setOutput('color-out', '无法解析该颜色值'); return;
+      }
+      const match = computed.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+      if (!match) { setOutput('color-out', '解析失败'); return; }
+      const r = parseInt(match[1]), g = parseInt(match[2]), b = parseInt(match[3]);
+      const a = match[4] ? parseFloat(match[4]) : 1;
+      const hex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+      const hsl = rgbToHsl(r,g,b);
+
+      preview.style.background = computed;
+
+      let result = `HEX: ${hex}
+RGB: rgb(${r}, ${g}, ${b})
+HSL: hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+      if (a < 1) result += `\nRGBA: rgba(${r}, ${g}, ${b}, ${a})`;
+      result += `\n\n亮度: ${Math.round((0.299*r + 0.587*g + 0.114*b))} (${(0.299*r + 0.587*g + 0.114*b) > 128 ? '浅色' : '深色'})`;
+
+      setOutput('color-out', result);
+    } catch(e) {
+      setOutput('color-out', '错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '复制 HEX', 'btn-secondary', () => {
+    const t = document.getElementById('color-out').textContent;
+    const m = t.match(/HEX: (#[0-9a-fA-F]{6})/);
+    if (m) copyText(m[1]);
+  });
+
+  function rgbToHsl(r,g,b) {
+    r/=255;g/=255;b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b);
+    let h=0,s=0,l=(max+min)/2;
+    if(max!==min){
+      const d=max-min;
+      s=l>0.5?d/(2-max-min):d/(max+min);
+      switch(max){
+        case r: h=((g-b)/d+(g<b?6:0))/6; break;
+        case g: h=((b-r)/d+2)/6; break;
+        case b: h=((r-g)/d+4)/6; break;
+      }
+    }
+    return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
+  }
+});
+
+// ===== 10. Text Counter =====
+registerTool('text', '文本统计', '📊', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">文本字数统计</div>';
+  panel.appendChild(card);
+
+  const ta = makeTextarea(card, 'text-in', '输入或粘贴文本...', 8);
+  const out = makeOutput(card, 'text-out');
+
+  ta.addEventListener('input', update);
+  function update() {
+    const text = ta.value;
+    const chars = text.length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const cnChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+    const lines = text ? text.split('\n').length : 0;
+    const bytes = new TextEncoder().encode(text).length;
+    setOutput('text-out',
+      `字符数: ${chars} (不含空格: ${charsNoSpace})
+中文字符: ${cnChars}
+英文单词: ${words}
+行数: ${lines}
+字节数 (UTF-8): ${bytes}
+预估阅读时间: ${Math.max(1, Math.ceil(words / 200 + cnChars / 400))} 分钟`);
+  }
+  update();
+});
+
+// ===== 11. IP / Subnet Calculator =====
+registerTool('ip', 'IP/子网', '🌐', (panel) => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = '<div class="card-title">IP / 子网计算器</div>';
+  panel.appendChild(card);
+
+  makeLabel(card, 'CIDR 地址');
+  const ipInput = makeInput(card, 'ip-in', '如 192.168.1.0/24');
+
+  const out = makeOutput(card, 'ip-out');
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row'; card.appendChild(btnRow);
+  makeBtn(btnRow, '计算', 'btn-primary', () => {
+    try {
+      const val = ipInput.value.trim();
+      const [ipPart, prefixPart] = val.split('/');
+      const prefix = parseInt(prefixPart);
+      if (isNaN(prefix) || prefix < 0 || prefix > 32) { setOutput('ip-out', '无效前缀'); return; }
+
+      const ipOctets = ipPart.split('.').map(Number);
+      if (ipOctets.length !== 4 || ipOctets.some(o => isNaN(o) || o < 0 || o > 255)) {
+        setOutput('ip-out', '无效 IP 地址'); return;
+      }
+
+      const ipInt = (ipOctets[0] << 24) | (ipOctets[1] << 16) | (ipOctets[2] << 8) | ipOctets[3];
+      const mask = prefix === 0 ? 0 : (~0 << (32 - prefix)) >>> 0;
+      const netInt = ipInt & mask;
+      const broadcast = netInt | (~mask >>> 0);
+      const firstHost = prefix >= 31 ? netInt : netInt + 1;
+      const lastHost = prefix >= 31 ? broadcast : broadcast - 1;
+      const totalHosts = prefix === 32 ? 1 : (prefix === 31 ? 2 : (broadcast - netInt - 1));
+
+      function intToIp(n) {
+        return [(n>>>24)&255, (n>>>16)&255, (n>>>8)&255, n&255].join('.');
+      }
+
+      // Detect private IP
+      const isPrivate = (
+        (ipOctets[0] === 10) ||
+        (ipOctets[0] === 172 && ipOctets[1] >= 16 && ipOctets[1] <= 31) ||
+        (ipOctets[0] === 192 && ipOctets[1] === 168) ||
+        (ipOctets[0] === 127) ||
+        (ipOctets[0] === 169 && ipOctets[1] === 254)
+      );
+
+      let info = `网络地址: ${intToIp(netInt)}
+子网掩码: ${intToIp(mask)}
+广播地址: ${intToIp(broadcast)}
+可用范围: ${intToIp(firstHost)} - ${intToIp(lastHost)}
+可用主机: ${totalHosts.toLocaleString()}
+类别: ${isPrivate ? '私有地址' : '公网地址'}`;
+
+      if (ipOctets[0] >= 224 && ipOctets[0] <= 239) info += '\n类型: 组播地址 (D类)';
+      else if (ipOctets[0] >= 240) info += '\n类型: 保留地址 (E类)';
+      else if (ipOctets[0] === 127) info += '\n类型: 回环地址';
+
+      info += `\n二进制掩码: ${mask.toString(2).padStart(32,'0').replace(/(.{8})/g,'$1 ').trim()}`;
+
+      setOutput('ip-out', info);
+    } catch(e) {
+      setOutput('ip-out', '错误: ' + e.message);
+    }
+  });
+  makeBtn(btnRow, '复制', 'btn-secondary', () => {
+    const t = document.getElementById('ip-out').textContent;
+    if (t && t !== '等待操作...') copyText(t);
+  });
+
+  // Quick fill presets
+  const presetsDiv = document.createElement('div'); presetsDiv.className = 'presets';
+  presetsDiv.style.marginTop = '12px';
+  card.appendChild(presetsDiv);
+  ['192.168.1.0/24','10.0.0.0/8','172.16.0.0/12','255.255.255.0/24'].forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'preset'; b.textContent = p;
+    b.onclick = () => { ipInput.value = p; };
+    presetsDiv.appendChild(b);
+  });
+});
+
+// ===== Init =====
+initUI();
+
+// Restore last active tab
+const saved = localStorage.getItem('activeTool');
+if (saved && tools[saved]) switchTool(saved);
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>

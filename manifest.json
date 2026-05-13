@@ -1,0 +1,14 @@
+{
+  "name": "IT 工具箱",
+  "short_name": "IT工具箱",
+  "description": "IT 人员实用工具箱 - 密码生成、JSON格式化、Base64、时间戳、哈希、正则、UUID、颜色转换等",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2f2f7",
+  "theme_color": "#1c1c1e",
+  "icons": [
+    { "src": "icons/icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icons/icon-120.png", "sizes": "120x120", "type": "image/png" }
+  ]
+}
